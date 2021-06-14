@@ -1,0 +1,9 @@
+{
+  "name": "compilador",
+  "version": "0.0.0",
+  "description": "compilador",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  }
+}
