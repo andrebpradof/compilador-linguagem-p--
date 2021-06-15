@@ -6,9 +6,9 @@
     "start": "nodemon -L ./src/index.js"
   },
   "license": "MIT",
-  "type": "module",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "range": "^0.0.3"
   }
 }
