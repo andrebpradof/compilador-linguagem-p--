@@ -1,0 +1,13 @@
+program teste3;
+var a: real;
+procedure nomep(x: real);
+begin
+read(a,b);
+if a<b+x then
+a:=b+2.x10
+else b:=a+x;
+end;
+begin {programa principal}
+read(a,@);
+nomep(a);
+end.
