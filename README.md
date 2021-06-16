@@ -2,7 +2,7 @@
 
 
 #### Entrar na pasta:
-`$ cd ./compliador`
+`$ cd ./compilador`
 #### Instalar módulos:
 `$ yarn install`
 #### Executar:
