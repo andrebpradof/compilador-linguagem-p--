@@ -1,9 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
-const { memory } = require('console');
 
-// Tablea que contem as palavras reservadas
+// Tabela que contem as palavras reservadas
 const tabela_reservados = {
   program: 'simb_program',
   var: 'simb_var',
@@ -25,9 +24,9 @@ const tabela_reservados = {
 };
 
 // Vetor com os operadores
-const operadores = [';', ':', '+', '-', '*', '/', '(', ')', '=', ',', '>', '<', '.']; 
+const operadores = [';', ':', '+', '-', '*', '/', '(', ')', '=', ',', '>', '<']; 
 
-// Toquem de saída. Recebe
+// Toquem de saída.
 let token = [];
 
 // Autômato para a validação de número inteiros e reais 
@@ -74,7 +73,7 @@ automatoNumero = (aux, num_linha) => {
           if(c >= '0' && c <= '9')
             token.push({'lexema': aux, 'token': 'num_inteiro', 'linha': num_linha, 'status': true});
           else{
-            token.push({'lexema': aux, 'token': 'Numero mal formado', 'linha': num_linha, 'status': false});
+            token.push({'lexema': aux, 'token': 'Número mal formado', 'linha': num_linha, 'status': false});
           }
           saida = {status: true };
         }
@@ -92,7 +91,7 @@ automatoNumero = (aux, num_linha) => {
           if(c >= '0' && c <= '9')
             token.push({'lexema': aux, 'token': 'num_real', 'linha': num_linha, 'status': true});
           else{
-            token.push({'lexema': aux, 'token': 'Numero mal formado', 'linha': num_linha, 'status': false});
+            token.push({'lexema': aux, 'token': 'Número mal formado', 'linha': num_linha, 'status': false});
           }
           saida = {status: true };
         }
@@ -104,7 +103,8 @@ automatoNumero = (aux, num_linha) => {
       
       // Estado 4
       case 4:
-        token.push({'lexema': aux, 'token': 'Numero mal formado', 'linha': num_linha, 'status': false});
+        token.push({'lexema': aux, 'token': 'Número mal formado', 'linha': num_linha, 'status': false});
+        s = 5;
         saida = {status: true };
         break;
       
@@ -201,7 +201,7 @@ automatoOperadores = (c, linha, num_linha, posicao) => {
         case 1:
           if (i >= linha.length - 1 && c_aux != ')'){
             linha_aux = linha.replace("\n", "");
-            token.push({'lexema': ')', 'token': 'Parenteses não fechado', 'linha': num_linha, 'status': false});
+            token.push({'lexema': ')', 'token': 'Parênteses não fechado', 'linha': num_linha, 'status': false});
           }
           else if(c_aux == '(')
             s = 2;
@@ -213,7 +213,7 @@ automatoOperadores = (c, linha, num_linha, posicao) => {
         case 2:
           if(i >= linha.length - 1 && c_aux !== ')'){
             linha_aux = linha.replace("\n", "");
-            token.push({'lexema': ')', 'token': 'Identacao dos parenteses', 'linha': num_linha, 'status': false});
+            token.push({'lexema': ')', 'token': 'Identação dos Parênteses', 'linha': num_linha, 'status': false});
           }
           else if(c_aux == '(')
             s = 3;
@@ -225,7 +225,7 @@ automatoOperadores = (c, linha, num_linha, posicao) => {
         case 3:
           if(i >= linha.length - 1 && c_aux != ')'){
             linha_aux = linha.replace("\n", "");
-            token.push({'lexema': ')', 'token': 'Identacao dos parenteses', 'linha': num_linha, 'status': false});
+            token.push({'lexema': ')', 'token': 'Identação dos Parênteses', 'linha': num_linha, 'status': false});
           }
           else if(c_aux == '(')
             s = 5;
@@ -236,13 +236,13 @@ automatoOperadores = (c, linha, num_linha, posicao) => {
           // Estado 4
           case 4:
             linha_aux = linha.replace("\n", "");
-            token.push({'lexema': ')', 'token': 'Identacao dos parenteses', 'linha': num_linha , 'status': false});
+            token.push({'lexema': ')', 'token': 'Identação dos Parênteses', 'linha': num_linha , 'status': false});
             break;
 
           // Estado 5
           case 5:
             linha_aux = linha.replace("\n", "");
-            token.push({'lexema': ')', 'token': 'Maximo de parenteses atingido', 'linha': num_linha, 'status': false});
+            token.push({'lexema': ')', 'token': 'Máximo de Parênteses atingido', 'linha': num_linha, 'status': false});
             break;
       }
     }
@@ -428,7 +428,7 @@ automatoIdentificador = (palavra, num_linha) => {
 
       // Estado 0
       case 0:
-        if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')){
+        if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z' ) || ( c == '_')){
           s = 1;
         }
         else{
@@ -436,9 +436,9 @@ automatoIdentificador = (palavra, num_linha) => {
         }
         break;
 
-      // Estado 0
+      // Estado 1
       case 1:
-        if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')){
+        if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || ( c == '_')){
           s = 1;
           
           if( (palavra.length -1) == parseInt(i)){
@@ -463,7 +463,7 @@ automatoIdentificador = (palavra, num_linha) => {
 
       // Estado 3
       case 3:
-        token.push({'lexema': palavra, 'token': 'Identificador não inicia letra', 'linha': num_linha, 'status': false});
+        token.push({'lexema': palavra, 'token': 'Identificador não inicia com letra', 'linha': num_linha, 'status': false});
         flag = false;
         break;
     }
@@ -483,7 +483,7 @@ comentario = (linha, pos, linha_num) => {
       case 0:
         if(c === '{'){ s =  1;}
         else if(c === '}'){
-          token.push({'lexema': '}', 'token': 'Comentario fechado sem abertura', 'linha': linha_num, 'status': false})
+          token.push({'lexema': '}', 'token': 'Comentário fechado sem abertura', 'linha': linha_num, 'status': false})
           return {status: false, mensagem: 'Comentario', pos: pos };
         }
         break;
@@ -500,7 +500,7 @@ comentario = (linha, pos, linha_num) => {
 
       // Estado 3
       case 3:
-        token.push({'lexema': '{', 'token': 'Comentario nao fechado', 'linha': linha_num, 'status': false})
+        token.push({'lexema': '{', 'token': 'Comentário não foi fechado', 'linha': linha_num, 'status': false})
         return {status: false, mensagem: 'Comentario', pos: pos };
     }
     pos++;
@@ -509,8 +509,6 @@ comentario = (linha, pos, linha_num) => {
 
 // Compilador Léxico
 module.exports = {
-
-
   async start(arquivo_entrada, callback) {
     try {
 
@@ -528,6 +526,9 @@ module.exports = {
 
         linha_num++;
         linha += '\n';
+
+        linha = linha.replace(/\t/g, '');
+
         for(let i = 0; i < linha.length; i++){
         
           if(linha[i] === '{' || linha[i] === '}'){
@@ -562,7 +563,11 @@ module.exports = {
               automatoOperadores(linha[i], linha, linha_num, i);
             }
             aux = '';
-            
+          }
+          else if(linha[i] == '.' && aux == 'end'){
+            token.push({'lexema': aux, 'token': tabela_reservados[aux], 'linha': linha_num, 'status': true});
+            automatoOperadores(linha[i], linha, linha_num, i);
+            aux = '';
           }
           else{
             if(typeof linha[i] !== "undefined"){
