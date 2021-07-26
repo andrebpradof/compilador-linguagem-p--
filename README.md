@@ -6,4 +6,4 @@
 #### Instalar módulos:
 `$ yarn install`
 #### Executar:
-`$ yarn start`
+`$ yarn start ./input.txt`
